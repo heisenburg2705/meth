@@ -55,13 +55,17 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('')
+            ->path('/heisenberg')
+            // ->spa()
             ->when($this->settings->login_enabled ?? true, fn($panel) => $panel->login(Login::class))
             ->when($this->settings->registration_enabled ?? true, fn($panel) => $panel->registration())
             ->when($this->settings->password_reset_enabled ?? true, fn($panel) => $panel->passwordReset())
             ->emailVerification()
             ->colors([
                 'primary' => Color::Amber,
+            ])
+            ->resources([
+                \App\Filament\Resources\TahunAjaranResource::class,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -101,6 +105,7 @@ class AdminPanelProvider extends PanelProvider
     {
         $plugins = [
             ThemesPlugin::make(),
+                // ->canViewThemesPage(fn () => auth()->user()?->hasRole('super_admin')),
             FilamentShieldPlugin::make(),
             ApiServicePlugin::make(),
             BreezyCore::make()
@@ -147,3 +152,7 @@ class AdminPanelProvider extends PanelProvider
         return $plugins;
     }
 }
+
+
+// INSERT INTO `kaido_kit`.`permissions` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES (48, 'page_ManageSetting', 'web', '2025-05-14 09:17:33', '2025-05-14 09:17:33');
+// INSERT INTO `kaido_kit`.`permissions` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES (49, 'page_Themes', 'web', '2025-05-14 09:17:33', '2025-05-14 09:17:33');
